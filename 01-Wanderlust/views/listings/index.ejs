@@ -12,21 +12,48 @@
 <% layout("/layouts/boilerplate") %>
 
 <body>
-    <h3>All Listings</h3>
+    <h3 class="mt-3">All Listings</h3>
 
     <!-- Step 6, then Step 10 ( moved to navbar.ejs, so commented out ) -->
     <!-- <form action="/listings/new" method="get">
         <button>Create New Listing</button>
     </form> -->
 
+
+    <!-- Step 12 -->
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-xs-1">
+        
+        <% for (const listing of allListings) { %>
+
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                <div class="card">
+                    <img class="card-img-top" src="<%= listing.image %>" alt="listing_image" style="height: 20rem;">
+                    
+                    <div class="card-img-overlay"></div> <!-- for card hover effect see style.css -->
+
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= listing.title %></b> <br>
+                            &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                        </p>
+                    </div>
+                </div>
+                
+            </a>
+
+        <% } %>
+
+    </div>
+
     <!-- Step 4 -->
-    <ul>
+    <!-- <ul>
         <% for (const listing of allListings) { %>
             <li>
                 <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
             </li>
         <% } %>
-    </ul>
+    </ul> -->
 
 </body>
 

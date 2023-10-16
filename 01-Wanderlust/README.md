@@ -27,7 +27,7 @@
 
   - CSS styles = Bootstrap
   - icons = FontAwesome
-  - fonts =
+  - fonts = Google Fonts
 
 # Step 1 - Basic Set Up
 
@@ -335,30 +335,58 @@ and paste in boilerplate
 
 -   We will make cards, copy from Bootstrap
 
---  In
+--  In views/listings/index.ejs
 
-    -
+    - paste in here
+    - add our details and as per requirement write code
+    - for responsiveness, we will wrap whole for loop with div class="row" of Bootstrap
+    and as per xs,sm,md,lg,xl add class="row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
+
+-- In public/css/style.css
+
+    - we style index page
+    - add google fonts css rules from website and paste it 
+
+-- In views/layouts/boilerplate.ejs
+
+    - add google fonts link from website and paste it above </head>
+
+-- In public/css/style.css
+
+    - add hover effect and click effect of card, we wrap caard with anchor tag    
 
 # Step 13 - Styling New Listing
 
--
+-   We will take class names and labels from form of Bootstrap, copy them
 
---  In
+-- In views/listings/new.ejs
 
-    -
+    - paste in here as per requirement
+
+-- In public/css/style.css
+
+    - our footer is not sticking to bottom, give body flex.
 
 # Step 14 - Styling Edit Listing
 
--
+-   We will take class names and labels from form of Bootstrap, copy them
 
---  In
+-- In views/listings/edit.ejs
 
-    -
+    - paste in here as per requirement
+
+-- In public/css/style.css
+
+    - edit button style change
 
 # Step 15 - Styling Show Listing
 
--
+- We will take card code block from Bootstrap, copy it and 
 
---  In
+-- In views/listings/edit.ejs
 
-    -
+    - paste in here as per requirement
+
+-- In public/css/style.css
+
+    - edit and delete button style change

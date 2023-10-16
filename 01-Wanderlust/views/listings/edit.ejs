@@ -12,10 +12,60 @@
 <% layout("/layouts/boilerplate") %>
 
 <body>
-    <h3>Edit your Listing</h3>
+
+    <!-- Step 14 -->
+    <div class="row col-8 offset-2">
+
+        <!-- <div class="col-8 offset-2"> -->
+
+            <h3 class="mt-3">Edit your Listing</h3>
+
+            <form action="/listings/<%= listing.id %>?_method=PUT" method="post">
+    
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" class="form-control" value="<%= listing.title %>" type="text">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" class="form-control"><%= listing.description %></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input name="listing[image]" class="form-control" value="<%= listing.image %>" type="text">
+                </div>
+        
+                <div class="row">
+
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" class="form-control" value="<%= listing.price %>" type="number">
+                    </div>
+            
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="listing[country]" class="form-control" value="<%= listing.country %>" type="text">
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" class="form-control" value="<%= listing.location %>" type="text">
+                </div>
+                       
+                <button class="btn btn-dark mb-3 edit-btn">Edit</button>
+        
+            </form>
+
+        <!-- </div> -->
+
+    </div>
 
     <!-- Step 7 -->
-    <form action="/listings/<%= listing.id %>?_method=PUT" method="post">
+    <!-- <form action="/listings/<%= listing.id %>?_method=PUT" method="post">
         <input type="text" name="listing[title]" value="<%= listing.title %>">
         <br><br>
         <textarea name="listing[description]"><%= listing.description %></textarea>
@@ -29,7 +79,7 @@
         <input type="text" name="listing[country]" value="<%= listing.country %>">
         <br><br>
         <button>Edit</button>
-    </form>
+    </form> -->
     
 </body>
 
