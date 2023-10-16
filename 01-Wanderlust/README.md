@@ -210,7 +210,7 @@
 
 -- In VS Code Terminal
 
-  - npm i ejs-mate
+    - npm i ejs-mate
 
 -- In app.js
 
@@ -283,7 +283,9 @@ and paste in boilerplate
 
 
 - Add New Icons - from fontawesome website
-    - search for your icon copy tag: <i class="fa-regular fa-compass"></i>
+
+    - search for your icon and copy tag: 
+        "<i class="fa-regular fa-compass"></i>"
     
 --  In views/includes/navbar.ejs
 
