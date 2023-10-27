@@ -1,16 +1,21 @@
-const mongoose = require("mongoose"); // Step 2
-
-const Schema = mongoose.Schema; // Step 2
-
 // Step 2
+
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+
 const listingSchema = new Schema({
+
   title: {
     type: String,
     required: true,
   },
+
   description: {
     type: String,
   },
+
   image: {
     type: String, //  URL
     default:
@@ -21,19 +26,22 @@ const listingSchema = new Schema({
         : userImage,
     // user uploaded image, and uploaded in our different database which stores only images but from there URL link didn't come then default image will come from here
   },
+
   price: {
     type: Number,
   },
+
   location: {
     type: String,
   },
+
   country: {
     type: String,
   },
+
 });
 
-// Step 2
+
 const Listing = mongoose.model("Listing", listingSchema);
 
-//Step 2
 module.exports = Listing;

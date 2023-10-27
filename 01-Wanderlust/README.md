@@ -4,6 +4,8 @@
 
 - Step 1 to 8 = Basic Listings CRUD Operations with no styles
 - Step 9 to 15 = Styling Listings CRUD Pages
+- Step 16 to 22 = Client & Server Side - Validations & Error Handling
+- Step 23 to ... = ...
 
 # Step 0 - Prerequisites
 
@@ -22,6 +24,7 @@
   - ejs-mate
   - mongoose
   - method-override
+  - joi
 
 - Extra Online packages ( cdn links )
 
@@ -37,6 +40,7 @@
   - public = static files ( css stylesheets )
   - views = ejs web page files
   - models = different model files as per different styles of Schema ( collection )
+  - utils = extra .js files ( error class, error catching function )
 
 -- In VS Code Terminal
 
@@ -206,7 +210,8 @@
 
 # Step 9 - Creating Boilerplate
 
-- We write same code block for many different ejs files but now we write this code block one time and export it to these different ejs files
+- We write same code block for many different ejs files 
+- but now we write this code block only one time and export it to these different ejs files
 
 -- In VS Code Terminal
 
@@ -390,3 +395,117 @@ and paste in boilerplate
 -- In public/css/style.css
 
     - edit and delete button style change
+
+# Step 16 - Client-Side Form Validation
+
+- When we enter data in the form, the browser and/or the web server will check to that
+- the data is in the correct format and within the constraints set by application
+
+-- In views/listings/edit.ejs & /new.ejs
+
+    - add attribute "required" to the fields of our forms ( input, textarea, ... )
+    - In above case, as per browser default error message will appear if fields are empty
+
+- In all browsers, we want our own custom styling of error message, for form validation
+- So, we will use Bootstrap => Forms => Validation
+
+-- In views/listings/edit.ejs & /new.ejs
+
+    - add "novalidate" attribute in form tag to remove default validation error messages
+    - add " class="needs-validation" " of bootstrap
+    - add javascript logic of bootstrap for above class "needs-validation"
+
+-- In public/js/validationScript.js
+
+    - add javascript logic from bootstrap for above class "needs-validation"
+
+-- In views/layouts/boilerplate.ejs
+
+    - add script tag    
+
+# Step 17 - Client-Side Form Validation - Success and Failure Text
+
+- We will style validation success or failure message, If data inserted by user is valid or not 
+
+-- In views/listings/edit.ejs & /new.ejs
+
+    - add div inside individual field-div, which has bootstrap class "valid-feedback" & "invalid-feedback"
+    - we will add our own messages for valid or invalid content
+
+# Step 18 - Server-Side Errors - wrapAsync function
+
+- Errors will come from MongoDB, when it cannot save data because of defined schema 
+
+-- In utils/wrapAsync.js
+
+    - make "wrapAsync" function to catch errors
+
+-- In app.js
+
+    - require "./utils/wrapAsync.js"
+    - pass all async functions to this "wrapAsync" function
+    - add our own custom error handling middleware app.use((err, ...)) at last
+
+# Step 19 - Server-Side Errors - ExpressError Class
+
+- We can send our own custom error messages to user
+
+-- In utils/ExpressError.js
+
+    - make "ExpressError" class to define status and message
+
+-- In app.js
+
+    - require ./utils/ExpressError.js"
+    - add app.all("*",...), for page which we didn't make ( page not found )
+    - send status and message in app.use((err,...))
+
+# Step 20 - Server-Side Errors - Error page
+
+- We will make our own error.ejs which will have error messages
+
+-- In views/error.ejs
+
+    - write code for alert from bootstrap
+
+-- In app.js
+
+    - render "error.ejs" from app.use((err,...)) 
+
+# Step 21 - Server-Side Errors - Schema Validation
+
+- If we add data from hoppscotch, postman, etc; then above form validation won't work
+- We have to check individual fields before data is saved in MongoDB
+- We will use joi tool in making of schema, which is server-side validation tool
+
+-- In VS Code Terminal
+
+    - npm i joi
+
+-- In schema.js
+
+    - require "joi"
+    - make schema validator using "joi"
+
+-- In app.js
+
+    - require "schema.js"
+    - add "result = listingSchema.validate(req.body)" in new & edit route where validator is required
+    - throw error if error is there: if(result.error) { throw new ExpresError(...) }
+
+# Step 22 - Server-Side Errors - Schema Validation Middleware
+
+- We can set above schema validation as a middleware
+
+-- In app.js
+
+    - create a only one function "validateSchema" which will validate schema
+    - add this function "validateSchema" as middleware in post & put code block
+
+# Step 23 - AAAAA
+
+- W
+
+-- In app.js
+
+    - c
