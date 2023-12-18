@@ -5,7 +5,8 @@
 - Step 1 to 8 = Basic Listings CRUD Operations with no styles
 - Step 9 to 15 = Styling Listings CRUD Pages
 - Step 16 to 22 = Client & Server Side - Validations & Error Handling
-- Step 23 to ... = ...
+- Step 23 to 31 = Reviews
+- Step 32 = Delete Listing
 
 # Step 0 - Prerequisites
 
@@ -490,7 +491,7 @@ and paste in boilerplate
 -- In app.js
 
     - require "schema.js"
-    - add "result = listingSchema.validate(req.body)" in new & edit route where validator is required
+    - add "result = listingSchemaJoiValidator.validate(req.body)" in new & edit route where validator is required
     - throw error if error is there: if(result.error) { throw new ExpresError(...) }
 
 # Step 22 - Server-Side Errors - Schema Validation Middleware
@@ -502,10 +503,105 @@ and paste in boilerplate
     - create a only one function "validateSchema" which will validate schema
     - add this function "validateSchema" as middleware in post & put code block
 
-# Step 23 - AAAAA
+# Step 23 - Creating Review model
 
-- W
+- We will create review model, in which we store comment, stars, date-time
+
+-- In models/review.js
+
+    - require mongoose
+    - make reviewSchema
+    - make model
+    - export model
+
+# Step 24 - Attach reviews with listings
+
+- We will add reference (ObjectID) in listingSchema, because it is a "One to Many" database relationship
+
+-- In models/listing.js
+
+    - add "review" key and value as an array of reference of Review model in listingSchema definition
+
+# Step 25 - Create Review form
+
+- We will create review form to get review from user
+
+-- In views/listings/show.ejs
+
+    - create form for review
+    
+# Step 26 - Store Reviews in Database
+
+- We will create review route to store reviews in the database. As we store reviews for individual listing, we have route as "listing/:id/reviews
 
 -- In app.js
 
-    - c
+    - require review model
+    - write after delete route of listing
+
+# Step 27 - Client side Validations of reviews
+
+- We will validate form data given by user using default & bootstrap classes in form itself.
+
+-- In views/listings/show.ejs
+
+    - textarea = add "required"
+    - form = add "novalidate" and add class "needs-validation" of bootstrap
+    - add some div for error
+
+# Step 28 - Server side Validations of reviews
+
+- We will validate data given by user as per database types and conditions using JOI.
+- Define Joi for reviewSchema, make funtion for validation error, pass this function as middleware.
+
+-- In schema.js
+
+    - write codes for Joi reviewSchema
+
+-- In app.js
+
+    - require reviewSchemaJoiValidator
+    - make function "validateReview" below "validateListing"
+    - write "validateReview" as middleware to post method of review
+
+# Step 29 - Render Reviews
+
+- show reviews in individual listing page
+
+-- In views/listings/show.ejs
+
+    - add div for showing reviews of this listing
+
+-- In app.js
+
+    - add "populate" method in app.get of listing, So that we can access data of reviews
+
+# Step 30 - Styling Reviews
+
+- style reviews as cards
+
+-- In views/listings/show.ejs
+
+    - add bootstrap card classes
+
+# Step 31 - Deleting Reviews
+
+- add delete button, delete route in app.js (/listings/:id/reviews/:reviewId)
+- we have to delete review from review collection as well as listing collection
+
+-- In views/listings/show.ejs
+
+    - add delete button in form
+
+-- In app.js
+
+    - create delete route for review
+    - $pull = This operator removes elements from an existing array for all instances of a value or values that match a specified condition. $pull searches as per our condition and pulls that whole referenceID
+
+# Step 32 - Delete Listing
+
+- Delete listing as well as all reference id ( such as reviews ). We will use mongoose middleware for delete
+
+-- In models/listing.js
+
+    - we will create post mongoose middleware here, which will come to effect when we delete any listing

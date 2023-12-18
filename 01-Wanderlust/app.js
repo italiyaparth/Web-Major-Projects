@@ -8,7 +8,10 @@ const ejsMate = require("ejs-mate");   // Step 9
 const Listing = require("./models/listing.js"); // Step 2
 const wrapAsync = require("./utils/wrapAsync.js"); // Step 18
 const ExpressError = require("./utils/ExpressError.js"); // Step 19
-const { listingSchema } = require("./schema.js"); // Step 21
+const { listingSchemaJoiValidator } = require("./schema.js"); // Step 21
+const Review = require("./models/review.js"); // Step 26
+const { reviewSchemaJoiValidator } = require("./schema.js"); // Step 28
+const review = require("./models/review.js");
 
 app.set("view engine", "ejs");      // Step 4
 app.set("views", path.join(__dirname, "views"));    // Step 4
@@ -39,7 +42,18 @@ main()
 
 // Step 22
 const validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
+    let { error } = listingSchemaJoiValidator.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
+//Step 28
+const validateReview = (req, res, next) => {
+    let { error } = reviewSchemaJoiValidator.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");
         throw new ExpressError(400, errMsg);
@@ -60,10 +74,10 @@ app.get("/listings/new", (req, res) => {
     res.render("listings/new.ejs");
 });
 
-// Step 5 // Step 18 - add wrapAsync
+// Step 5 // Step 18 - add wrapAsync  // Step 29 - add populate
 app.get("/listings/:id", wrapAsync(async (req, res, next) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs",  { listing });
 }));
 
@@ -71,7 +85,7 @@ app.get("/listings/:id", wrapAsync(async (req, res, next) => {
 app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
 
     /*
-        let result = listingSchema.validate(req.body);      // Step 21
+        let result = listingSchemaJoiValidator.validate(req.body);      // Step 21
         if (result.error) {
             throw new ExpressError(400, result.error);      // Step 21
         }
@@ -93,7 +107,7 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res, next) => {
 app.put("/listings/:id", validateListing, wrapAsync(async (req, res, next) => {
 
     /*
-        let result = listingSchema.validate(req.body);      // Step 21
+        let result = listingSchemaJoiValidator.validate(req.body);      // Step 21
         if (result.error) {
             throw new ExpressError(400, result.error);      // Step 21
         }
@@ -111,6 +125,32 @@ app.delete("/listings/:id", wrapAsync(async (req, res, next) => {
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+// Step 26  &  Step 28 - added validateReview middleware
+// Reviews Post
+app.post("listings/:id/reviews", validateReview, wrapAsync(async (req, res, next) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await listing.save();
+    await newReview.save();
+
+    res.redirect(`/listings/${listing._id}`);
+}));
+
+// Step 31
+// Reviews Delete
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res, next) => {
+    let { id, reviewId } = req.params;
+
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${listing._id}`);
+}));
+
 
 // Step 19
 app.all("*", (req, res, next) => {

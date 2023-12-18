@@ -1,7 +1,7 @@
 // Step 21
 const Joi = require("joi");
 
-module.exports.listingSchema = Joi.object({
+module.exports.listingSchemaJoiValidator = Joi.object({
 
     // listing : Joi.object().required()
     
@@ -13,6 +13,17 @@ module.exports.listingSchema = Joi.object({
         country: Joi.string().required(),
         price: Joi.number().required().min(0),
         image: Joi.string().allow("", null)
+
+    }).required()
+});
+
+// Step 28
+module.exports.reviewSchemaJoiValidator = Joi.object({
+
+    review: Joi.object({
+
+        rating: Joi.number().required().min(1).max(5),
+        comment: Joi.string().required()
 
     }).required()
 });

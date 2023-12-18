@@ -80,7 +80,7 @@ body {
 /* Step 12 */
 /* index.ejs */
 /* Cards */
-.card {
+.listing-card {
     border: none !important;
     margin-bottom: 2rem;
 }
