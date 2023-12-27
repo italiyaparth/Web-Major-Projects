@@ -7,6 +7,8 @@
 - Step 16 to 22 = Client & Server Side - Validations & Error Handling
 - Step 23 to 31 = Reviews
 - Step 32 = Delete Listing
+- Step 33 = Express Router
+- Step 34 = Cookies
 
 # Step 0 - Prerequisites
 
@@ -42,6 +44,7 @@
   - views = ejs web page files
   - models = different model files as per different styles of Schema ( collection )
   - utils = extra .js files ( error class, error catching function )
+  - routes = routes for different collections
 
 -- In VS Code Terminal
 
@@ -605,3 +608,33 @@ and paste in boilerplate
 -- In models/listing.js
 
     - we will create post mongoose middleware here, which will come to effect when we delete any listing
+
+# Step 33 - Express Router
+
+- Express Routers are a way to organize your Express application such that our primary app.js file does not become bloated.
+
+-- In routes/listing.js
+
+    - require express
+    - create router object
+    - paste listings routes from app.js
+    - replace "app" with "router"
+    - we will add "/listings" from path in app.js, so remove that from all the paths
+    - export "router"
+    - cut-paste other required objects, required function which we will use here from app.js ( don't forget to check path when reuire is used )
+
+-- In app.js
+
+    - require router from routes folder give it name as per file name.
+    - e.g. const listings = require("./routes/listing.js");
+    - connect app.js and routes/listing.js
+    - e.g. app.use("/listings", listings);
+
+-- In routes/review.js
+
+    - same as above for routes/listing.js
+    - we need id of listing here but id will be app.js file. We will use " { mergeParams: true }", when creating router object as an option.
+
+# Step 34 - Cookies
+
+- 
