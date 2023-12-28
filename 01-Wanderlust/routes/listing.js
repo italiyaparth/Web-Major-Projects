@@ -49,6 +49,13 @@ router.get("/new", (req, res) => {
 router.get("/:id", wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     const listing = await Listing.findById(id).populate("reviews");
+
+    // Step 35
+    if(!listing) {
+        req.flash("error", "Listing does NOT exist");
+        res.redirect("/listings");
+    }
+
     res.render("listings/show.ejs",  { listing });
 }));
 
@@ -68,6 +75,9 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
 
     let newListing = new Listing(req.body.listing);
     await newListing.save();
+
+    req.flash("success", "New Listing Created!");   // Step 35
+
     res.redirect("/listings");
 }));
 
@@ -79,6 +89,13 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
 router.get("/:id/edit", wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
+
+    // Step 35
+    if(!listing) {
+        req.flash("error", "Listing does NOT exist");
+        res.redirect("/listings");
+    }
+
     res.render("listings/edit.ejs",  { listing });
 }));
 
@@ -99,6 +116,9 @@ router.put("/:id", validateListing, wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     // "..." means deconstructing given object into individual key-value pairs
+
+    req.flash("success", "Listing Updated!");   // Step 35
+
     res.redirect(`/listings/${id}`);
 }));
 
@@ -110,6 +130,9 @@ router.put("/:id", validateListing, wrapAsync(async (req, res, next) => {
 router.delete("/:id", wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
+
+    req.flash("success", "Listing Deleted!");   // Step 35
+
     res.redirect("/listings");
 }));
 

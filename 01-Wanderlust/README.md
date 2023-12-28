@@ -8,7 +8,9 @@
 - Step 23 to 31 = Reviews
 - Step 32 = Delete Listing
 - Step 33 = Express Router
-- Step 34 = Cookies
+- Step 34 = Session
+- Step 35 = Flash
+- Step 36 = 
 
 # Step 0 - Prerequisites
 
@@ -21,13 +23,15 @@
 
 - Node Modules
 
-  - nodemon ( globally one time install, if not already installed )
+  - nodemon ( globally one time install, if not already installed - for local system)
   - express
   - ejs
   - ejs-mate
   - mongoose
   - method-override
   - joi
+  - express-session
+  - connect-flash
 
 - Extra Online packages ( cdn links )
 
@@ -635,6 +639,48 @@ and paste in boilerplate
     - same as above for routes/listing.js
     - we need id of listing here but id will be app.js file. We will use " { mergeParams: true }", when creating router object as an option.
 
-# Step 34 - Cookies
+# Step 34 - Session
 
-- 
+- We will use session to store temporary information. npm install express-session
+
+-- In app.js
+
+    - require express-session
+    - create sessionOptions object
+    - app.use(session(sessionOptions));
+    - make some changes to default values cookie such as expires, maxAge (in sessionOptions) to set expiration to our cookies
+
+# Step 35 - Flash
+
+- We will use Flash to send a messages when listing added or updated or deleted, etc. npm install connect-flash
+
+-- In app.js
+
+    - require connect-flash
+    - app.use(flash());
+    - create a middleware for all flash messages, which can be used in .ejs file directly
+
+-- In routes/listing.js
+
+    - In post, delete, put route create req.flash for successfully adding new listing or delete listing or update listing
+    - In get, put route listing does not exist then create error flash for error
+
+-- In routes/review.js
+
+    - In post, delete route create req.flash for successfully adding new review or delete review
+
+-- In views/layouts/boilerplate.ejs
+
+    - above "<%- body %>" write "<%- include("../includes/flash.ejs") %>"
+
+-- In views/layouts/flash.ejs
+
+    - use bootstrap alerts to show message ( use variable name from middleware directly in flash.ejs file )
+
+# Step 36 - a
+
+- We 
+
+-- In app.js
+
+    - a

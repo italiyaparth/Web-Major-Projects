@@ -29,7 +29,12 @@
     <%- include("../includes/navbar.ejs") %>
 
     <!-- Step 9 -->
-    <div class="container"><%- body %></div>
+    <div class="container">
+
+        <%- include("../includes/flash.ejs") %>
+
+        <%- body %>
+    </div>
 
     <!-- Step 11 -->
     <%- include("../includes/footer.ejs") %>

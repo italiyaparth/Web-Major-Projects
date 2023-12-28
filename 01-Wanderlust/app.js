@@ -4,6 +4,8 @@ const mongoose = require("mongoose"); // Step 1
 const path = require("path");   // Step 4
 const methodOverride = require("method-override");   // Step 7
 const ejsMate = require("ejs-mate");   // Step 9
+const session = require("express-session"); // Step 34
+const flash = require("connect-flash"); // Step 35
 
 // const Listing = require("./models/listing.js"); // Step 2   // Step 33
 // const wrapAsync = require("./utils/wrapAsync.js"); // Step 18   // Step 33
@@ -30,6 +32,10 @@ app.engine("ejs", ejsMate);     // Step 9
 
 
 
+
+
+
+
 // Step 1
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -47,6 +53,31 @@ main()
 
 
 
+// Step 34
+const sessionOptions = {
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,  // 7 days in milliseconds
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true  // for security purposes - prevents cross scripting attacks
+    }
+};
+
+
+app.use(session(sessionOptions));   // Step 34
+app.use(flash());   // Step 35
+
+
+// Step 35
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
+
+
 
 // Step 33
 
@@ -54,14 +85,7 @@ app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 
 
-
-
-
-
 /* Step 33  cut - pasted in routes/listing.js
-
-
-
 
 
 
@@ -76,6 +100,15 @@ const validateListing = (req, res, next) => {
     }
 };
 
+
+
+*/
+
+
+/* Step 33  cut - pasted in routes/review.js
+
+
+
 //Step 28
 const validateReview = (req, res, next) => {
     let { error } = reviewSchemaJoiValidator.validate(req.body);
@@ -86,7 +119,6 @@ const validateReview = (req, res, next) => {
         next();
     }
 };
-
 
 
 
